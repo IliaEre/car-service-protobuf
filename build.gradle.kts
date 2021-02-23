@@ -16,6 +16,7 @@ plugins {
 	kotlin("plugin.spring") version "1.4.30"
 	id("com.google.protobuf") version "0.8.8"
 	id("com.google.cloud.tools.jib") version "2.7.1"
+	id("org.flywaydb.flyway") version "6.2.3"
 //	id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
 }
 
@@ -49,6 +50,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
+	implementation("org.flywaydb:flyway-core")
 	// endpoint
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	// protobuf
@@ -90,4 +92,9 @@ jib {
 	container {
 		jvmFlags = listOf("-Xms256m", "-Xmx512m")
 	}
+}
+
+flyway {
+	url = "jdbc:h2:mem:"
+	locations = arrayOf("classpath:db/migration")
 }
