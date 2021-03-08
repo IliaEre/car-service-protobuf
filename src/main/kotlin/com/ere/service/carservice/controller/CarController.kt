@@ -16,17 +16,12 @@ class CarController(
 ) {
 
     @GetMapping("/{id}")
-    fun getCar(@PathVariable id: Long) =
+    suspend fun getCar(@PathVariable id: Long) =
         carService.getCar(id)
-            ?.let { ResponseEntity.ok(it) }
-            ?: kotlin.run { ResponseEntity.notFound() }
+            .map { ResponseEntity.ok(it) }
 
     @GetMapping
-    fun getCars() = carService.getAll()
-
-    @PostMapping
-    fun create() {
-    }
+    suspend fun getCars() = carService.getAll()
 
     companion object {
         const val PROTOBUF_MEDIA_TYPE_VALUE = "application/x-protobuf"

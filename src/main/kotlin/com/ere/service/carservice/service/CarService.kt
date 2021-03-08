@@ -1,14 +1,16 @@
 package com.ere.service.carservice.service
 
-import com.ere.service.carservice.domain.Car
+import com.ere.service.carservice.domain.exception.CarNotFoundException
+import com.ere.service.carservice.domain.toProto
 import com.ere.service.carservice.repository.CarRepository
 import main.java.protobuf.ProtoCar
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 interface CarService {
-    fun getCar(id: Long): ProtoCar?
-    fun getAll()
-    fun save()
+    suspend fun getCar(id: Long): Mono<ProtoCar>
+    suspend fun getAll(): Flux<ProtoCar>
 }
 
 @Service
@@ -16,23 +18,12 @@ internal class CarServiceImpl(
     private val carRepository: CarRepository
 ): CarService {
 
-    override fun getCar(id: Long): ProtoCar? {
-        val c = Car(1L, " ", " ") // todo: soma logic here
+    override suspend fun getCar(id: Long): Mono<ProtoCar> =
+        carRepository.findById(id)
+            .map { it.toProto() }
+            .switchIfEmpty(Mono.error { throw CarNotFoundException("Car with id:$id was not found.") })
 
-        return ProtoCar.newBuilder()
-            .setId(1)
-            .setName("")
-            .setTitle("")
-            .build()
-    }
-
-    override fun getAll() {
-
-        TODO("Not yet implemented")
-    }
-
-    override fun save() {
-        TODO("Not yet implemented")
-    }
-
+    override suspend fun getAll(): Flux<ProtoCar> =
+        carRepository.findAll()
+            .map { it.toProto() }
 }
