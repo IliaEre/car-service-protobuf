@@ -23,10 +23,6 @@ class CarController(
     @GetMapping
     suspend fun getCars() = carService.getAll()
 
-    @PostMapping
-    suspend fun create() {
-    }
-
     companion object {
         const val PROTOBUF_MEDIA_TYPE_VALUE = "application/x-protobuf"
     }

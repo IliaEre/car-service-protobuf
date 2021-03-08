@@ -39,13 +39,12 @@ extra["springCloudVersion"] = "2020.0.1"
 dependencies {
 	// main
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	//	implementation("org.springframework.cloud:spring-cloud-stream")
 	// kotlin
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	// db
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	runtimeOnly("com.h2database:h2")
